@@ -1,53 +1,45 @@
+# Spring Security Basic Auth Demo
 
-# CURL Requests
+This project demonstrates **Spring Security (Spring Boot 3)** using:
 
-### 1. Create a Customer
-
-```bash
-curl -X POST http://localhost:8080/api/customers \
-  -H "Content-Type: application/json" \
-  -d '{
-        "firstName": "John",
-        "lastName": "Doe",
-        "email": "john.doe@example.com",
-        "phoneNumber": "1234567890"
-      }'
-```
+- Basic Authentication  
+- Role-based Authorization  
+- In-Memory Users  
+- Secure API Endpoints  
+- Custom `SecurityFilterChain` configuration  
 
 ---
 
-### 2. Get All Customers
+## 🚀 Features
 
-```bash
-curl -X GET http://localhost:8080/api/customers
-```
----
+### 🔐 Authentication
+Project uses **Basic Auth** with these in-memory users:
 
-### 3. Get Customer by ID
+| Username | Password  | Role  |
+|----------|-----------|--------|
+| admin    | admin123  | ADMIN |
+| user     | user123   | USER  |
 
-```bash
-curl -X GET http://localhost:8080/api/customers/1
-```
-
----
-
-### 4. Update a Customer
-
-```bash
-curl -X PUT http://localhost:8080/api/customers/1 \
-  -H "Content-Type: application/json" \
-  -d '{
-        "firstName": "Jane",
-        "lastName": "Smith",
-        "email": "jane.smith@example.com",
-        "phoneNumber": "9876543210"
-      }'
-```
+Passwords are encoded using **BCrypt**.
 
 ---
 
-### 5. Delete a Customer
+## 🔒 Authorization Rules (Endpoints)
 
-```bash
-curl -X DELETE http://localhost:8080/api/customers/1
-```
+| Method | Endpoint              | Access            |
+|--------|------------------------|--------------------|
+| POST   | `/contacts`           | ADMIN only        |
+| DELETE | `/contacts/**`        | ADMIN only        |
+| GET    | `/contacts`           | USER, ADMIN       |
+| GET    | `/contacts/public/**` | Public (no auth)  |
+| ANY    | others                | Authenticated     |
+
+---
+
+## 🔧 Security Configuration (Summary)
+
+- CSRF disabled  
+- HTTP Basic enabled  
+- Frame options disabled (for H2 / dev tools)  
+- Request matchers applied for role-based access  
+
